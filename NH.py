@@ -35,6 +35,22 @@ def nh_mixing_function(state):
 
 # NH algorithm
 
+# def nh(data):
+#     # Initialise the NH state to the NH constants
+#     state = NH_CONSTANTS[:]
+#     # For each 32-byte block of input data
+#     for i in range(0, len(data), 32):
+#         # XOR the block with the NH state
+#         state = [state[j] ^ struct.unpack('<Q', data[i + 8 * j:i + 8 * j + 8])[0] for j in range(4)]
+#         # Apply 4 rounds of the NH mixing function
+#         for j in range(4):
+#             nh_mixing_function(state)
+#     # XOR the final NH state with the last incomplete block of input data
+#     if len(data) % 32 != 0:
+#         state = [state[j] ^ struct.unpack('<Q', data[-(len(data) % 32) + 8 * j:-(len(data) % 32) + 8 * j + 8])[0] for j in range(4)]
+#     # Return the final NH state
+#     return b''.join(struct.pack('<Q', state[j]) for j in range(4))
+
 def nh(data):
     # Initialise the NH state to the NH constants
     state = NH_CONSTANTS[:]
@@ -48,8 +64,11 @@ def nh(data):
     # XOR the final NH state with the last incomplete block of input data
     if len(data) % 32 != 0:
         state = [state[j] ^ struct.unpack('<Q', data[-(len(data) % 32) + 8 * j:-(len(data) % 32) + 8 * j + 8])[0] for j in range(4)]
+    # Truncate each NH state value to 64 bits
+    state = [(s & 0xFFFFFFFFFFFFFFFF) for s in state]
     # Return the final NH state
-    return b''.join(struct.pack('<Q', state[j]) for j in range(4))
+    return b''.join(struct.pack('<Q', s) for s in state)
+
 
 # Test vectors
 
