@@ -24,8 +24,6 @@
 - Adiantum has been included in Android 10 and is expected to be included in future versions of Android.
 
 
-> Sunday - 26/03/2023 (Today’s goal)
-
 ### Here are the steps to implement the NH and Poly1305 algorithms according to the paper "Adiantum Encryption Scheme Implementation":
 
 #### NH Algorithm:
